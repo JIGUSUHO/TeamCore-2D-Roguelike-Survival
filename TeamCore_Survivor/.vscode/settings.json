@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "TeamCore_Survivor.sln"
+    "dotnet.defaultSolution": "TeamCore_Survivor.sln",
+    "dotnet.preferCSharpExtension": true
 }
