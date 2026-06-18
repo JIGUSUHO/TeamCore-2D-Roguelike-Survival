@@ -70,9 +70,25 @@ public class Manage_Item : MonoBehaviour
 
         float nextValue = data.levelValues[level]; // 다음 레벨이 가질 최종 누적 수치
 
-        // 퍼센트(%) 단위를 쓸 아이템과 일반 숫자 단위를 쓸 아이템 구분
+        // ★ 폭탄, 음파 같은 액티브 무기는 퍼센트가 아니라 개수로 표시
+        if (data.itemType == ItemType.ActiveWeapon)
+        {
+            int nextCount = Mathf.RoundToInt(nextValue);
+
+            if (level == 0)
+            {
+                return $"[NEW] Lv.1: {nextCount}개";
+            }
+            else
+            {
+                int currentCount = Mathf.RoundToInt(data.levelValues[level - 1]);
+                return $"Lv.{level} > Lv.{level + 1}\n{currentCount}개 > {nextCount}개";
+            }
+        }
+
+        // 나머지 일반 아이템은 기존처럼 퍼센트 표시
         string unit = "%";
-        float scale = 100f; // 퍼센트는 0.1을 10으로 보여주기 위함
+        float scale = 100f;
 
         if (level == 0)
         {
