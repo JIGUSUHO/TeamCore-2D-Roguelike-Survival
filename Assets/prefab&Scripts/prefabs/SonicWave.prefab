@@ -48,7 +48,7 @@ MonoBehaviour:
   attackRadius: 6
   attackAngle: 90
   slowDuration: 2
-  lifeTime: 0.5
+  lifeTime: 1
   spawnOffset: 2
 --- !u!212 &6876726063780676096
 SpriteRenderer:

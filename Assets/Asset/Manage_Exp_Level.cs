@@ -9,7 +9,7 @@ public class Manage_Exp_Level : MonoBehaviour
     public int currentLevel = 1;
     public float currentExp = 0f;
     public float targetExp = 100f;
-    [SerializeField] private int targetSuccessLevel = 30; // ���� ��ǥ ���� �߰�
+    [SerializeField] private int targetSuccessLevel = 40; // ���� ��ǥ ���� �߰�
 
     [Header("UI References")]
     [SerializeField] private Slider expSlider;
@@ -46,11 +46,11 @@ public class Manage_Exp_Level : MonoBehaviour
         /* �׽�Ʈ�� �ڵ�
         // [�ٽ�] �� ������ ����ġ�� �����ؼ� ��ġ�� ������ ����!
         // �̷��� �ϸ� �ν����Ϳ��� ���ڸ� ���� ���ĵ� ��� �����մϴ�.
+        */
         if (currentExp >= targetExp)
         {
             LevelUp();
         }
-        */
 
         // �����̴� �ε巴�� ä���
         if (expSlider != null)
