@@ -9,7 +9,7 @@ public class Manage_Exp_Level : MonoBehaviour
     public int currentLevel = 1;
     public float currentExp = 0f;
     public float targetExp = 100f;
-    [SerializeField] private int targetSuccessLevel = 40; // ���� ��ǥ ���� �߰�
+    [SerializeField] private int targetSuccessLevel = 45; // ���� ��ǥ ���� �߰�
 
     [Header("UI References")]
     [SerializeField] private Slider expSlider;
