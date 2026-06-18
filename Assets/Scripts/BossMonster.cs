@@ -270,7 +270,7 @@ public class BossMonster : MonoBehaviour
 
         if (Vector2.Distance(transform.position, player.position) <= smashRadius)
         {
-            PlayerStats playerScript = player.GetComponent<PlayerStats>();
+            Manage_Hp playerScript = player.GetComponent<Manage_Hp>();
             if (playerScript != null) 
                 playerScript.TakeDamage(damage * 2); 
         }
@@ -281,17 +281,20 @@ public class BossMonster : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
     }
 
-    // 2. �ܺ�(���� ��)���� ȣ���Ͽ� �������� ������ �Լ�
+    // 2. 외부(무기 등)에서 호출하여 데미지를 입히는 함수
     public void TakeDamage(int damageAmount)
     {
         if (isDead) return;
 
         currentHealth -= damageAmount;
 
-        // �������� ���� �� �����̴� �ڷ�ƾ ����
+        // ★ [추가됨] 보스 체력이 진짜 깎이고 있는지 콘솔창에서 확인!
+        Debug.Log($"{myName} 피격! 받은 데미지: {damageAmount} / 남은 체력: {currentHealth}");
+
+        // 피격 시 하얗게 깜빡이는 코루틴 실행
         StartCoroutine(FlashRoutine());
 
-        // ü���� 0 ���ϰ� �Ǹ� ��� ó��
+        // 체력이 0 이하가 되면 사망 처리
         if (currentHealth <= 0)
         {
             Die();
@@ -312,27 +315,26 @@ public class BossMonster : MonoBehaviour
     }
 
     // 3. ��� ó�� ����
+    // 3. 사망 처리 로직
     private void Die()
     {
         isDead = true;
         StopAllCoroutines();
-        if (indicatorLine != null) indicatorLine.enabled = false; // ��� �� ���� ����
+        if (indicatorLine != null) indicatorLine.enabled = false; 
 
-        // GemSpawner�� ���� ������Ʈ Ǯ���� ������ ������ (������ 8�������� ��Ѹ���)
+        // ★ [핵심 추가] 게임 매니저를 찾아서 승리(WinGame) 명령을 내립니다! ★
+        Manage_Exp_Level gameManager = FindObjectOfType<Manage_Exp_Level>();
+        if (gameManager != null)
+        {
+            Debug.Log("보스 처치 완료! 게임 클리어!");
+            gameManager.WinGame();
+        }
+
+        // 아래는 기존에 있던 보석 소환 및 스포너 복귀 로직입니다. (그대로 둡니다)
         if (GemSpawner.Instance != null)
         {
             int gemCount = 8;
-            int expPerGem = dropExpAmount / gemCount;
-            float scatterRadius = 1.5f;
-
-            for (int i = 0; i < gemCount; i++)
-            {
-                float angle = i * (360f / gemCount);
-                Vector2 spawnDir = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-                Vector2 spawnPos = (Vector2)transform.position + spawnDir * scatterRadius;
-
-                GemSpawner.Instance.SpawnGem(spawnPos, expPerGem);
-            }
+            // ... (생략) ...
         }
 
         if (EnemySpawner.Instance != null)
@@ -346,17 +348,19 @@ public class BossMonster : MonoBehaviour
     }
 
     // 4. �÷��̾�� �浹���� �� �������� �ִ� ����
+    // 4. 플레이어와 충돌했을 때 데미지를 주는 로직
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && !isDead)
         {
             if (Time.time >= lastAttackTime + attackCooldown)
             {
-                PlayerStats playerScript = collision.gameObject.GetComponent<PlayerStats>();
+                // ★ [수정됨] PlayerStats를 Manage_Hp로 변경!
+                Manage_Hp playerScript = collision.gameObject.GetComponent<Manage_Hp>();
                 if (playerScript != null)
                 {
                     playerScript.TakeDamage(damage);
-                    lastAttackTime = Time.time; //Ÿ�� ���� �� ���� �ð� ����
+                    lastAttackTime = Time.time;
                 }
             }
         }

@@ -144,12 +144,19 @@ public class RangedMonster : MonoBehaviour
     }
 
     public void TakeDamage(int damageAmount)
-    {
-        currentHealth -= damageAmount;
-        StartCoroutine(FlashRoutine());
-        if (currentHealth <= 0) Die();
-    }
+{
+    currentHealth -= damageAmount;
+    
+    // [추가된 부분] 콘솔창에 데미지와 남은 체력 확인
+    Debug.Log($"{myName} 피격! 받은 데미지: {damageAmount} / 남은 체력: {currentHealth}"); 
 
+    StartCoroutine(FlashRoutine());
+
+    if (currentHealth <= 0)
+    {
+        Die();
+    }
+}
     private IEnumerator FlashRoutine()
     {
         spriteRenderer.color = Color.red;

@@ -85,7 +85,7 @@ public class ProjectileWeapon : MonoBehaviour
     // 2. Àû°ú ºÎµúÇûÀ» ¶§µµ Æø¹ß ÇÔ¼ö¸¦ ºÎ¸¨´Ï´Ù!
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy"))
+        if (collision.CompareTag("Enemy") || collision.CompareTag("Monster")|| collision.CompareTag("Wall"))
         {
             TriggerExplosion();
         }

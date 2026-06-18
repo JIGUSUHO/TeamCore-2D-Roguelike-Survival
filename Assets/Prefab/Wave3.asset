@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1951868fc3203014cae57b932c6723eb, type: 3}
   m_Name: Wave3
   m_EditorClassIdentifier: Assembly-CSharp::WaveData
-  waveDuration: 180
+  waveDuration: 90
   spawnInfos:
   - enemyName: Slime
-    spawnRate: 3.5
+    spawnRate: 3
   - enemyName: Robot
     spawnRate: 1
   - enemyName: Bat

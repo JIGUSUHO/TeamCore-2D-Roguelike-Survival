@@ -51,6 +51,14 @@ public class Manage_Item : MonoBehaviour
             case ItemType.ProjectileSpeed:
                 // 합칠 곳: 투사체 날아가는 속도 스탯 변경 로직
                 break;
+
+            case ItemType.ActiveWeapon:
+                if (WeaponManager.Instance != null)
+                {
+                    // WeaponManager의 LevelUpWeapon 함수에 아이템의 '이름'을 그대로 전달합니다!
+                    WeaponManager.Instance.LevelUpWeapon(data.itemName);
+                }
+                break;
         }
     }
 

@@ -8,6 +8,10 @@ TagManager:
   - Undefined
   - Weapon
   - Enemy
+  - Monster
+  - Wall
+  - MagneticRadius
+  - Obstacle
   layers:
   - Default
   - TransparentFX

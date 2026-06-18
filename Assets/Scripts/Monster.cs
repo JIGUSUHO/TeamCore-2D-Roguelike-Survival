@@ -139,19 +139,19 @@ public class Monster : MonoBehaviour
 
     // 2. 외부(무기 등)에서 호출하여 데미지를 입히는 함수
     public void TakeDamage(int damageAmount)
+{
+    currentHealth -= damageAmount;
+    
+    // [추가된 부분] 콘솔창에 데미지와 남은 체력 확인
+    Debug.Log($"{myName} 피격! 받은 데미지: {damageAmount} / 남은 체력: {currentHealth}"); 
+
+    StartCoroutine(FlashRoutine());
+
+    if (currentHealth <= 0)
     {
-        currentHealth -= damageAmount;
-
-        // 데미지를 입을 때 깜빡이는 코루틴 실행
-        StartCoroutine(FlashRoutine());
-
-        // 체력이 0 이하가 되면 사망 처리
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+        Die();
     }
-
+}
     // 깜빡임 효과를 주는 코루틴 함수
     private IEnumerator FlashRoutine()
     {
@@ -178,17 +178,18 @@ public class Monster : MonoBehaviour
 
     // 4. 플레이어와 충돌했을 때 데미지를 주는 로직
 
-    private void OnCollisionStay2D(Collision2D collision)
+   private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             if (Time.time >= lastAttackTime + attackCooldown)
             {
-                 PlayerStats playerScript = collision.gameObject.GetComponent<PlayerStats>();
-                 if (playerScript != null)
+                 // [수정됨] PlayerStats 대신 팀원분이 만든 Manage_Hp를 가져옵니다!
+                 Manage_Hp hpScript = collision.gameObject.GetComponent<Manage_Hp>();
+                 if (hpScript != null)
                  {
-                      playerScript.TakeDamage(damage);
-                      lastAttackTime = Time.time; // 타격 성공 시 공격 시간 갱신
+                      hpScript.TakeDamage(damage);
+                      lastAttackTime = Time.time; 
                  }
             }
         }
